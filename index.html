@@ -8,35 +8,72 @@
 </head>   
 
 <body>   
-  <a href="javascript:testApp('weixin://')" class="dl-btn" id="download">打开微信</a>   
-  <script>    
-    function testApp(url) {
-      var timeout, t = 1000, hasApp = true;
-      setTimeout(function () {
-        // if (!hasApp) {
-        //   //没有安装微信                
-        //   var r = confirm("您没有安装微信，请先安装微信!");
-        //   if (r == true) {
-        //     location.href = "http://weixin.qq.com/"
-        //   }
-        // } else {
-        //   //安装微信
-        // }
-        document.body.removeChild(ifr);
-      }, 2000)
-      var t1 = Date.now();
-      var ifr = document.createElement("iframe");
-      ifr.setAttribute('src', url);
-      ifr.setAttribute('style', 'display:none');
-      document.body.appendChild(ifr);
-      timeout = setTimeout(function () {
-        var t2 = Date.now();
-        if (!t1 || t2 - t1 < t + 100) {
-          hasApp = false;
+  <!--手机百度中，底部浮层中含有微信字样（不要有微信字样），浮层就消失-->
+  <div id="bdbox">
+    <div id="bdmain">
+      <div class="bdtop">
+        <div class="bdpic">
+          <img src="./fengmi2_files/wechat.png">
+        </div>
+        <div class="bdcode">
+          <p>添加莹莹: <span data-track="bdhn" class="btncolor wxcode">k******1</span>
+            <a href="javascript:;" class="openwx wangwang" id="zhouzhou" name="openwx"
+              data-clipboard-text="k******1"><span class="opencolors">【点此一键复制】</span></a>
+            →购买纯正土蜂蜜</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--一键复制微信号-->
+  <div class="clipboards">
+    <div class="clipboards-main">
+      <div class="clpclosed " name="closed">×</div>
+      <div class="clpbox">
+        <p class="clpinfo">
+          恭喜您微信号已经复制成功
+        </p>
+        <p class="clpinfo2">
+          请您前往微信进行好友添加
+        </p>
+      </div>
+      <div class="clpbox2">
+        <p class="clpinfo2">
+          您的浏览器不支持此功能，<br>请您手动长按复制微信号去添加
+        </p>
+        <p class="clpinfo2">
+          <span class="wxcode clpwx">kk99051</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <!--一键复制微信号-->
+  <script src="./fengmi2_files/clipboard.min.js" type="text/javascript"></script>
+  <script>
+    $(function () {
+      var wxcodes = document.getElementsByClassName("wxcode")[0].innerHTML;
+      $(".openwx,a[name=openwx]").attr("data-clipboard-text", wxcodes);
+      var btns = document.querySelectorAll('[name=openwx]');
+      var clipboard = new ClipboardJS(btns);
+      clipboard.on('success', function (e) {
+        $(".clipboards").show();
+        $(".clpbox").show();
+        $(".clpbox2").hide();
+      });
+      clipboard.on('error', function (e) {
+        $(".clipboards").show();
+        $(".clpbox").hide();
+        $(".clpbox2").show();
+      });
+      $("div[name=closed]").click(function () {
+        $(".clipboards").fadeOut();
+      });
+      $(".clipboards").on('click', function (a) {
+        if ($(a.target).is('.clpclosed') || $(a.target).is('.clipboards')) {
+          $(".clipboards").fadeOut();
         }
-      }, t);
-    }   
-  </script>   
+      });
+    })
+  </script>
 </body>
 
 </html>
